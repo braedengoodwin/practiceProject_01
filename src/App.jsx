@@ -1,27 +1,48 @@
 import { useState } from "react";
+import { calculateInvestmentResults } from "./util/investment";
 import InputTable from "./components/InputTable";
 import OutputTable from "./components/OutputTable";
 
 function App() {
   
   const [changeInitialNum, setChangeInitialNum] = useState({
-    initialInvestment: {}, 
-    annualInvestment: {},
-    expectedReturn: {},
-    duration: {}
+    initialInvestment: 0, 
+    annualInvestment: 0,
+    expectedReturn: 0,
+    duration: 0
   });
-
-  
 
   function handleInitialNumChange(symbol, newVal){
     setChangeInitialNum((prevVal) => {
+      
       return {
         ...prevVal,
-        [symbol]: newVal
+        [symbol]: newVal 
+         
       }
     })
-
   }
+ 
+  let newIntialInv = Number(changeInitialNum.initialInvestment)
+  let newAnn = Number(changeInitialNum.annualInvestment)
+  const totalInvest = newIntialInv + newAnn
+  
+  console.log(totalInvest)
+
+  let x = calculateInvestmentResults(changeInitialNum)
+
+  let years = x.map(item => item.year)
+  let interests = x.map(item => item.interest)
+  let valEndOfYear = x.map(item => item.valueEndOfYear)
+  let annInv = x.map(item => item.annualInvestment)
+ 
+  // console.log(interests)
+  // console.log(valEndOfYear)
+  // console.log(annInv)
+
+ 
+  
+
 
   return (
     <main>
@@ -59,7 +80,7 @@ function App() {
           />
         </label>
       </div>
-      <OutputTable/>
+      <OutputTable years={years} interests={interests} valEndOfYear={valEndOfYear} annIn={annInv} totalInvest={totalInvest}/>
     </main>
   );
 }
